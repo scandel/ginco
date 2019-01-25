@@ -13,6 +13,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Dataset implements \JsonSerializable {
 
+	CONST PUBLISHED = 'published';
+	CONST UNPUBLISHED = 'unpublished';
+
 	/**
 	 * The identifier of the dataset.
 	 *
@@ -68,6 +71,12 @@ class Dataset implements \JsonSerializable {
 	 * and the getter and setter which deals with a table. Only the first Object of the Array is useful.
 	 */
 	private $model;
+
+	/**
+	 *
+	 * @var string @ORM\Column(name="status", type="string", length=12, nullable=false)
+	 */
+	private $status;
 	
 	/**
 	 * Get id
@@ -217,4 +226,34 @@ class Dataset implements \JsonSerializable {
 	public function getFiles() {
 		return $this->files;
 	}
+
+	/**
+	 * 
+	 */
+	public function getStatus(){
+		return $this->status;
+	}
+
+	/**
+	 * 
+	 */
+	public function setStatus($status){
+		$this->status = $status;
+		return $this;
+	}
+
+	/**
+	 * 
+	 */
+	public function isPublished(){
+		return $this->getStatus() == self::PUBLISHED;
+	}
+
+	/**
+	 * 
+	 */
+	public function isUnpublished(){
+		return $this->getStatus() == self::UNPUBLISHED;
+	}
+
 }

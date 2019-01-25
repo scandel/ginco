@@ -10,6 +10,10 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Model {
 
+	CONST PUBLISHED = 'published';
+	CONST UNPUBLISHED = 'unpublished';
+	CONST SOFT_DELETED = 'soft-deleted';
+
 	/**
 	 *
 	 * @var string @ORM\Column(name="id", type="string", nullable=false)
@@ -56,6 +60,12 @@ class Model {
 	 * @ORM\JoinColumn(name="schema_code", referencedColumnName="schema_code")
 	 */
 	private $schema;
+
+	/**
+	 *
+	 * @var string @ORM\Column(name="status", type="string", length=12, nullable=false)
+	 */
+	private $status;
 
 	public function __construct() {
 		$this->tables = new ArrayCollection();
@@ -231,6 +241,42 @@ class Model {
 	public function __toString()
 	{
 		return $this->getId()." (" . $this->getName() . ")";
+	}
+
+	/**
+	 * 
+	 */
+	public function getStatus(){
+		return $this->status;
+	}
+
+	/**
+	 * 
+	 */
+	public function setStatus($status){
+		$this->status = $status;
+		return $this;
+	}
+
+	/**
+	 * 
+	 */
+	public function isPublished(){
+		return $this->getStatus() == self::PUBLISHED;
+	}
+
+	/**
+	 * 
+	 */
+	public function isUnpublished(){
+		return $this->getStatus() == self::UNPUBLISHED;
+	}
+
+	/**
+	 * 
+	 */
+	public function isSoftDeleted(){
+		return $this->getStatus() == self::SOFT_DELETED;
 	}
 
 }

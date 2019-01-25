@@ -19,35 +19,13 @@ class ModelController extends Controller {
 	 * @Route("/models/", name="configurateur_model_index", defaults={"publicationStatus" = null})
 	 */
 	public function indexAction($models = null) {
-		$em = $this->getDoctrine()->getManager('metadata_work');
+		$em = $this->getDoctrine()->getManager('metadata');
 		$repository = $em->getRepository('IgnOGAMConfigurateurBundle:Model');
 		$models = $repository->findAllOrderedByName();
-		// Check if models are published and contains data
-		// And if they are publishable, ie: not published, at least one table, at least one non-technical field in each table
-		$modelsPubState = array();
-		$modelsPublishable = array();
-		$modelsFilled = array();
-		$modelsPermissions = array();
-		foreach ($models as $model) {
-			$modelId = $model->getId();
-			$modelsPubState[$modelId] = $this->get('app.modelpublication')->isPublished($modelId);
-			$modelsPublishable[$modelId] = $this->get('app.modelpublication')->isPublishable($modelId);
-			$modelsUnpublishable[$modelId] = $this->get('app.modelunpublication')->isUnpublishable($modelId);
-			$modelsPermissions[$modelId] = array();
-			$modelsPermissions[$modelId]['editable'] = $this->get('app.permissions')->isModelEditable($modelId);
-			$modelsPermissions[$modelId]['editableMessage'] = $this->get('app.permissions')->getMessage();
-			$modelsPermissions[$modelId]['editableCode'] = $this->get('app.permissions')->getCode();
-			$modelsPermissions[$modelId]['deletable'] = $this->get('app.permissions')->isModelDeletable($modelId);
-			$modelsPermissions[$modelId]['deletableMessage'] = $this->get('app.permissions')->getMessage();
-			$modelsPermissions[$modelId]['deletableCode'] = $this->get('app.permissions')->getCode();
-		}
+
 		$uploadForm = $this->createForm(ModelUploadType::class);
 		return $this->render('IgnOGAMConfigurateurBundle:Model:index.html.twig', array(
 			'models' => $models,
-			'pubStates' => $modelsPubState,
-			'publishable' => $modelsPublishable,
-			'unpublishable' => $modelsUnpublishable,
-			'permissions' => $modelsPermissions,
 			'upload_form' => $uploadForm->createView()
 		));
 	}

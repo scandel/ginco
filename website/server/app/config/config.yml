@@ -130,6 +130,7 @@ doctrine:
             metadata:
                  connection: metadata
                  mappings:
+                    IgnOGAMConfigurateurBundle: ~
                     IgnGincoBundle:
                      dir: Entity/Metadata
             raw_data:

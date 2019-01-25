@@ -19,7 +19,7 @@ class DatasetImportController extends Controller {
 	 */
 	public function indexAction($datasets = null) {
 		// get import models list
-		$em = $this->getDoctrine()->getManager('metadata_work');
+		$em = $this->getDoctrine()->getManager('metadata');
 		$repository = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset');
 		$datasets = $repository->findByTypeAndOrderedByName('IMPORT');
 
